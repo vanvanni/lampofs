@@ -83,5 +83,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("File deleted successfully\n")
+	fmt.Print("File deleted successfully\n\n")
 }

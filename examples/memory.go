@@ -61,5 +61,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Memory file deleted successfully")
+	fmt.Print("Memory file deleted successfully\n\n")
 }
