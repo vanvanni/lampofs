@@ -77,7 +77,7 @@ func TestMemoryDriver(t *testing.T) {
 	err = driver.Delete("test.txt")
 	assert.NoError(t, err)
 
-	// Verify file is deleted
+	// Verify file
 	_, err = driver.Read("test.txt")
 	assert.Error(t, err)
 	assert.Equal(t, errors.ErrFileNotFound, err)
@@ -87,12 +87,12 @@ func TestMemoryDriverErrors(t *testing.T) {
 	driver := NewMemoryDriver()
 	assert.NotNil(t, driver)
 
-	// Test reading non-existent file
+	// Reading non-existent file
 	_, err := driver.Read("nonexistent.txt")
 	assert.Error(t, err)
 	assert.Equal(t, errors.ErrFileNotFound, err)
 
-	// Test writing to existing file (should fail)
+	// Writing to existing file (should fail)
 	testData := []byte("test")
 	err = driver.Write("existing.txt", testData)
 	assert.NoError(t, err)
@@ -101,7 +101,7 @@ func TestMemoryDriverErrors(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, errors.ErrFileExists, err)
 
-	// Test deleting non-existent file
+	// Deleting non-existent file
 	err = driver.Delete("nonexistent.txt")
 	assert.Error(t, err)
 	assert.Equal(t, errors.ErrFileNotFound, err)
