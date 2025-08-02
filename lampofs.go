@@ -5,8 +5,19 @@ import (
 	"time"
 )
 
+type LampEventType = string
+
+const (
+	READ    LampEventType = "READ"
+	WRITE   LampEventType = "WRITE"
+	PUT     LampEventType = "PUT"
+	DELETE  LampEventType = "DELETE"
+	PREPEND LampEventType = "UPDATE-PREPEND"
+	APPEND  LampEventType = "UPDATE-APPEND"
+)
+
 type LampEvent struct {
-	Type      string // READ, WRITE, PUT, DELETE, UPDATE
+	Type      LampEventType
 	Path      string
 	Timestamp int64
 	Data      interface{}
@@ -51,7 +62,7 @@ func (l *Lampo) Read(path string) (io.ReadCloser, error) {
 	}
 
 	l.fireEvent(LampEvent{
-		Type:      "READ",
+		Type:      READ,
 		Path:      path,
 		Timestamp: time.Now().Unix(),
 	})
@@ -66,7 +77,7 @@ func (l *Lampo) Write(path string, data []byte) error {
 	}
 
 	l.fireEvent(LampEvent{
-		Type:      "WRITE",
+		Type:      WRITE,
 		Path:      path,
 		Timestamp: time.Now().Unix(),
 		Data:      len(data),
@@ -82,7 +93,7 @@ func (l *Lampo) Put(path string, data []byte) error {
 	}
 
 	l.fireEvent(LampEvent{
-		Type:      "PUT",
+		Type:      PUT,
 		Path:      path,
 		Timestamp: time.Now().Unix(),
 		Data:      len(data),
@@ -98,7 +109,7 @@ func (l *Lampo) Delete(path string) error {
 	}
 
 	l.fireEvent(LampEvent{
-		Type:      "DELETE",
+		Type:      DELETE,
 		Path:      path,
 		Timestamp: time.Now().Unix(),
 	})
@@ -112,9 +123,9 @@ func (l *Lampo) Update(path string, data []byte, prepend bool) error {
 		return err
 	}
 
-	action := "APPEND"
+	action := APPEND
 	if prepend {
-		action = "PREPEND"
+		action = PREPEND
 	}
 
 	l.fireEvent(LampEvent{
