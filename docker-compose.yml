@@ -1,0 +1,17 @@
+services:
+  minio:
+    image: quay.io/minio/minio
+    container_name: "s3-minio"
+    restart: unless-stopped
+    ports:
+      - "9010:9000"
+      - "9011:9001"
+    volumes:
+      - lampofs_s3_data:/data
+    environment:
+      - MINIO_ROOT_USER=local
+      - MINIO_ROOT_PASSWORD=password123
+    command: server /data --console-address ":9001"
+volumes:
+  lampofs_s3_data:
+
